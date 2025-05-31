@@ -33,3 +33,5 @@ func main() {
 	fmt.Println(List)
 
 }
+
+// для проверки
