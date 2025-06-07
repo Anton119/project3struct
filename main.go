@@ -3,11 +3,22 @@ package main
 import (
 	"fmt"
 	"project3struct/bins"
+	"project3struct/config"
 	"project3struct/storage"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("ошибка с env")
+	}
+
+	cfg := config.NewConfig()
+	fmt.Println("Key из когфига:", cfg)
 
 	id := "1"
 	private := true
@@ -29,7 +40,14 @@ func main() {
 	fmt.Println()
 	fmt.Println("после преобразования в json")
 
-	storage.Save(List)
+	var store storage.Storage = &storage.FileStorage{Path: "data.json"}
+	store.Save(List)
+	fmt.Println(List)
+
+	var storeTxt storage.Storage = &storage.FileStorage{Path: "store.txt"}
+	storeTxt.Save(List)
 	fmt.Println(List)
 
 }
+
+// для проверки

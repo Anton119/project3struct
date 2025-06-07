@@ -8,6 +8,29 @@ import (
 	"project3struct/file"
 )
 
+type Storage interface {
+	Save(list *bins.BinList) error
+}
+
+type FileStorage struct {
+	Path string
+}
+
+func (s *FileStorage) Save(list *bins.BinList) error {
+	data, err := ListToBytes(list)
+	if err != nil {
+		fmt.Println("не удалось преобразовать")
+		return err
+	}
+
+	err = file.WriteFile(data, s.Path)
+	if err != nil {
+		fmt.Println("не удалось записать файл")
+		return err
+	}
+	return nil
+}
+
 func BinToBytes(b *bins.Bin) ([]byte, error) {
 
 	if b == nil {
@@ -28,13 +51,4 @@ func ListToBytes(list *bins.BinList) ([]byte, error) {
 	}
 
 	return file, nil
-}
-
-func Save(list *bins.BinList) {
-	data, err := ListToBytes(list)
-	if err != nil {
-		fmt.Println("не удалось преобразовать")
-	}
-
-	file.WriteFile(data, "data.json")
 }
